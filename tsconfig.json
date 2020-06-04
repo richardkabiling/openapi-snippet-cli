@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "importHelpers": true,
+    "lib": ["ES2019"],
+    "module": "commonjs",
+    "outDir": "lib",
+    "rootDir": "src",
+    "strict": true,
+    "target": "es2017",
+    "typeRoots": ["./node_modules/@types", "./typings"]
+  },
+  "include": [
+    "src/**/*", "typings/**/*"
+  ]
+}

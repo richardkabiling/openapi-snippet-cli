@@ -8,20 +8,63 @@ Adds openapi snippets using `openapi-snippet` module in redoc style (x-codeSampl
 [![Downloads/week](https://img.shields.io/npm/dw/openapi-snippet-cli.svg)](https://npmjs.org/package/openapi-snippet-cli)
 [![License](https://img.shields.io/npm/l/openapi-snippet-cli.svg)](https://github.com/richardkabiling/openapi-snippet-cli/blob/master/package.json)
 
-<!-- toc -->
+* [Getting Started](#getting-started)
 * [Usage](#usage)
-<!-- tocstop -->
-# Usage
-<!-- usage -->
+* [Arguments](#arguments)
+* [Options](#options)
+
+# Getting Started
+To install:
+
 ```sh-session
 $ npm install -g openapi-snippet-cli
-$ openapi-snippet COMMAND
-running command...
-$ openapi-snippet (-v|--version|version)
-openapi-snippet-cli/0.1.0 darwin-x64 node-v12.16.1
-$ openapi-snippet --help [COMMAND]
-USAGE
-  $ openapi-snippet COMMAND
-...
 ```
-<!-- usagestop -->
+
+# Usage
+## Adding Snippets to a Schema
+```sh-session
+$ openapi-snippet schema.yaml -o dist/schema.yaml
+```
+
+The example above should add snippets to `schema.yaml` and output the modified schema to a new file `dist/schema.yaml`.
+
+## Outputting JSON
+```sh-session
+$ openapi-snippet schema.yaml -e json -o dist/schema.json
+```
+
+## Choosing Targets
+```sh-session
+$ openapi-snippet schema.yaml -t java -t c -o dist/schema.json
+```
+
+The example above should add snippets for `java` and `c` using their default frameworks
+
+```sh-session
+$ openapi-snippet schema.yaml -t java_okhttp -o dist/schema.json
+```
+
+This should add snippets for 'java` using OkHttp.
+
+# Arguments
+```
+USAGE
+  $ openapi-snippet [FILE]
+
+ARGUMENTS
+  FILE  input openapi document. It will attempt to resolve references (including both internal adn external ones)
+```
+
+# Options
+
+```
+OPTIONS
+  -e, --ext=yaml|json    [default: yaml] output format
+  -h, --help             show CLI help
+  -o, --output=output    [default: output.yaml] output file name
+
+  -t, --targets=targets  target snippet languages + frameworks. Can be provided multiple times. If inputting language only, defaults to one of the frameworks. Supports
+                         languages supported in https://github.com/ErikWittern/openapi-snippet. Defaults to adding snippets for ALL supported languages.
+
+  -v, --version          show CLI version
+```

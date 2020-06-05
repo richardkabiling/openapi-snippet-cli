@@ -1,7 +1,7 @@
 {
   "name": "openapi-snippet-cli",
   "description": "Adds openapi snippets using openapi-snippet module in redoc style",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Richard Kabiling",
   "bin": {
     "openapi-snippet": "./bin/run"

@@ -5,6 +5,7 @@ import { OpenAPI } from 'openapi-types'
 import * as _ from 'lodash'
 import * as yaml from 'js-yaml'
 import * as fs from 'fs'
+import * as path from 'path'
 
 const methods = [
   'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'
@@ -46,13 +47,13 @@ class OpenapiSnippetCli extends Command {
     version: flags.version({char: 'v'}),
     help: flags.help({char: 'h'}),
     targets: flags.string({
-      description: 'Target snippet languages + frameworks. Can be provided multiple times. If inputting language only, defaults to one of the frameworks. Supports languages supported in https://github.com/ErikWittern/openapi-snippet',
+      description: 'target snippet languages + frameworks. Can be provided multiple times. If inputting language only, defaults to one of the frameworks. Supports languages supported in https://github.com/ErikWittern/openapi-snippet. Defaults to adding snippets for ALL supported languages.',
       char: 't',
       multiple: true,
       parse: (input) => input.split(',')
     }),
     ext: flags.string({
-      description: 'Output format and extension',
+      description: 'output format',
       char: 'e',
       options: [
         'yaml', 'json'
@@ -60,13 +61,13 @@ class OpenapiSnippetCli extends Command {
       default: 'yaml'
     }),
     output: flags.string({
-      description: 'Output file name',
+      description: 'output file name',
       char: 'o',
-      default: 'output'
+      default: 'output.yaml'
     })
   }
 
-  static args = [{name: 'file'}]
+  static args = [{name: 'file', description: 'input openapi document. It will attempt to resolve references (including both internal adn external ones)'}]
 
   async run() {
     const isT = <T> (value: T|undefined): value is T => {
@@ -80,13 +81,15 @@ class OpenapiSnippetCli extends Command {
       .filter(isT)
     const apiWithSnippets = this.withSnippets(api, resolvedTargets)
 
-    const filename = `${process.cwd()}/${flags.output}.${flags.ext}`
+    const absoluteFileName = path.resolve(flags.output)
+    const dir = path.dirname(absoluteFileName)
+    fs.mkdirSync(dir, { recursive: true });
     if(flags.ext == 'yaml') {
       const dump = yaml.safeDump(apiWithSnippets)
-      fs.writeFileSync(filename, dump)
-    } else {
-      const dump = JSON.stringify(apiWithSnippets)
-      fs.writeFileSync(filename, dump)
+      fs.writeFileSync(absoluteFileName, dump)
+    } else if(flags.ext == 'json') {
+      const dump = JSON.stringify(apiWithSnippets, null, 2)
+      fs.writeFileSync(absoluteFileName, dump)
     }
   }
 

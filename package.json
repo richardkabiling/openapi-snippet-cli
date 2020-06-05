@@ -1,7 +1,7 @@
 {
   "name": "openapi-snippet-cli",
   "description": "Adds openapi snippets using openapi-snippet module in redoc style",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Richard Kabiling",
   "bin": {
     "openapi-snippet": "./bin/run"
@@ -44,7 +44,11 @@
   ],
   "homepage": "https://github.com/richardkabiling/openapi-snippet-cli",
   "keywords": [
-    "oclif"
+    "openapi",
+    "swagger",
+    "snippets",
+    "openapi-snippets",
+    "cli"
   ],
   "license": "MIT",
   "main": "lib/index.js",
